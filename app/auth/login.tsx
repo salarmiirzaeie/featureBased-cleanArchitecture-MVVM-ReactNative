@@ -1,12 +1,7 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { router } from "expo-router";
+import { LoginView } from "@/features/auth";
 
-const Login = () => {
-  return (
-    <View>
-      <Text>Login</Text>
-    </View>
-  );
-};
-
-export default Login;
+// Routes stay thin: they only wire navigation into feature views.
+export default function LoginRoute() {
+  return <LoginView onLoggedIn={() => router.replace("/home")} onGoToSignUp={() => router.push("/auth/signup")} />;
+}
