@@ -1,12 +1,9 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { Redirect } from "expo-router";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "@/features/auth";
 
-const index = () => {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  );
-};
-
-export default index;
+/** Entry route: sends the user to the right place based on the persisted session. */
+export default function Index() {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  return <Redirect href={isAuthenticated ? "/home" : "/auth/login"} />;
+}

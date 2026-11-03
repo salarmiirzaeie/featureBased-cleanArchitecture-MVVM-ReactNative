@@ -1,18 +1,16 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, type UnknownAction } from "@reduxjs/toolkit";
+import { sessionEnded, sessionReducer } from "@/features/auth";
 import { api } from "./api/api";
 
-// import {logout} from './features/auth/authSlice';
-
-const reducers = combineReducers({
+const appReducer = combineReducers({
+  session: sessionReducer,
   [api.reducerPath]: api.reducer,
 });
 
-export const rootReducer = (
-  state: any,
-  action: { type: string; payload?: any }
-) => {
-  // if (action.type === logout.type) {
-  //   return reducers(undefined, action);
-  // }
-  return reducers(state, action);
+export type AppState = ReturnType<typeof appReducer>;
+
+/** Logging out resets the whole store, so no cached data from the previous user survives. */
+export const rootReducer = (state: AppState | undefined, action: UnknownAction): AppState => {
+  if (action.type === sessionEnded.type) return appReducer(undefined, action);
+  return appReducer(state, action);
 };

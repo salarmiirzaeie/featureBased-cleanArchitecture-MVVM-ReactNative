@@ -1,12 +1,6 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { router } from "expo-router";
+import { SignUpView } from "@/features/auth";
 
-const SignUp = () => {
-  return (
-    <View>
-      <Text>SignUp</Text>
-    </View>
-  );
-};
-
-export default SignUp;
+export default function SignUpRoute() {
+  return <SignUpView onSignedUp={() => router.replace("/home")} onGoToLogin={() => router.back()} />;
+}
