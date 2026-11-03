@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import type { FieldErrors } from "@/shared/error";
+import { ValidationError, type FieldErrors } from "@/shared/error";
 import { authModule } from "../../di";
 import type { LoginUseCase } from "../../domain/usecases/LoginUseCase";
 import { sessionStarted } from "../state/sessionSlice";
@@ -36,8 +36,8 @@ export function useLoginViewModel(login: Pick<LoginUseCase, "execute"> = authMod
       dispatch(sessionStarted(result.value));
       return true;
     }
-    if (result.error.kind === "validation") {
-      setFieldErrors((result.error as { fields: FieldErrors }).fields);
+    if (result.error instanceof ValidationError) {
+      setFieldErrors(result.error.fields);
     } else {
       setFormError(result.error.message);
     }
